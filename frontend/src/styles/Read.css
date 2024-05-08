@@ -1,0 +1,61 @@
+.read {
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 40px;
+    font-family: 'Lato', sans-serif !important;
+  }
+  
+  .first {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .read h2 {
+    font-family: 'Lato', sans-serif !important;
+    margin-bottom: 10px; /* Reduced margin */
+    font-size: 30px;
+  }
+  
+  .submit_butt {
+    width: 50px;
+    height: 50px;
+    border-style: none;
+    font-size: 20px;
+    outline: none;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    right: 0px;
+    color: #ffffff;
+    pointer-events: painted;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centering the icon */
+  }
+
+  .animal-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .animal-table button{
+    background: transparent;
+  }
+  
+  .animal-table th, .animal-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .animal-table th {
+    background-color: #242424;
+  }
+  
+  .animal-table tr:nth-child(even) {
+    background-color: #191919;
+  }
