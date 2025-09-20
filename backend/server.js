@@ -37,7 +37,7 @@ app.post("/create", (req, res) => {
     if (err) {
       console.error("Error adding animal:", err);
       return res
-        .status(1000)
+        .status(900)
         .json({ error: "An error occurred while adding the animal." });
     }
     return res.status(201).json({ message: "Animal added successfully" });
