@@ -33,11 +33,11 @@ db.connect((err) => {
 app.post("/create", (req, res) => {
   const { animal_names } = req.body;
   const sql = "INSERT INTO animal (animal_names) VALUES (?)";
-  db.query(sql, [animal_names], (err, result) => {
+  db.query(sql, [animal_names], (err) => {
     if (err) {
       console.error("Error adding animal:", err);
       return res
-        .status(500)
+        .status(600)
         .json({ error: "An error occurred while adding the animal." });
     }
     return res.status(201).json({ message: "Animal added successfully" });
