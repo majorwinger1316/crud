@@ -8,6 +8,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+// Logging middleware for testing
+app.use((req, res, next) => {
+  console.log(`${req.method} request to ${req.url}`);
+  next();
+});
+
 const db = mysql.createConnection({
   host: "Your_host",
   user: "Your_user",
@@ -23,47 +29,38 @@ db.connect((err) => {
   console.log("Connected to MySQL database");
 });
 
-app;
-
+// CREATE animal
 app.post("/create", (req, res) => {
   const { animal_names } = req.body;
-
   const sql = "INSERT INTO animal (animal_names) VALUES (?)";
-  const values = [animal_names];
-
-  db.query(sql, values, (err, result) => {
+  db.query(sql, [animal_names], (err) => {
     if (err) {
-      console.error("Error registering user:", err);
-      if (err.code === "ER_DUP_ENTRY") {
-        return res.status(400).json("User ID or email already exists");
-      }
+      console.error("Error adding animal:", err);
       return res
-        .status(500)
-        .json({ error: "An error occurred while registering." });
+        .status(900)
+        .json({ error: "An error occurred while adding the animal." });
     }
-    return res.status(201).json({ message: "User registered successfully" });
+    return res.status(201).json({ message: "Animal added successfully" });
   });
 });
 
+// READ animals
 app.get("/read", (req, res) => {
   const sql = "SELECT * FROM animal";
   db.query(sql, (error, results) => {
     if (error) {
       console.error("Error executing query:", error);
-      res.status(500).send("Internal Server Error");
-      return;
+      return res.status(500).send("Internal Server Error");
     }
     res.json(results);
   });
 });
 
+// DELETE animal by id (assuming you have an id column)
 app.delete("/delete/:id", (req, res) => {
   const { id } = req.params;
-
-  const sql = "DELETE FROM animal WHERE animal_names = ?";
-  const values = [id];
-
-  db.query(sql, values, (err, result) => {
+  const sql = "DELETE FROM animal WHERE id = ?";
+  db.query(sql, [id], (err, result) => {
     if (err) {
       console.error("Error deleting animal:", err);
       return res
@@ -77,18 +74,15 @@ app.delete("/delete/:id", (req, res) => {
   });
 });
 
-app.put("/update/:animalName", (req, res) => {
-  const { animalName } = req.params;
+// UPDATE animal
+app.put("/update/:id", (req, res) => {
+  const { id } = req.params;
   const { updatedName } = req.body;
-
-  const sql = "UPDATE animal SET animal_names = ? WHERE animal_names = ?";
-  const values = [updatedName, animalName];
-
-  db.query(sql, values, (error, result) => {
+  const sql = "UPDATE animal SET animal_names = ? WHERE id = ?";
+  db.query(sql, [updatedName, id], (error, result) => {
     if (error) {
       console.error("Error updating animal:", error);
-      res.status(500).send("Internal Server Error");
-      return;
+      return res.status(500).send("Internal Server Error");
     }
     res.status(200).json({ message: "Animal updated successfully" });
   });
